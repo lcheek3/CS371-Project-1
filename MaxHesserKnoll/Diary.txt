@@ -1,1 +1,5 @@
-2/10/2016
+2/5/2016 - Friday
+The three team members, Max, Lucas, and Nick, met for a few minutes, exchanging emails and creating a github repository for the Battleship project. We also briefly discussed the scope of the project, such as whether we want a GUI and networked play. 
+
+2/8/2016 - Monday
+We created 3 user stories and assigned them UTU (Unspecified Time Units) to give them relative difficulties. We also briefly discussed libraries for doing networking. We briefly discussed project design, including objects and data structures needed for the Battleship game. We tentatively plan on coding the Battleship game in C++.
