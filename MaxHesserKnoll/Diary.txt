@@ -3,3 +3,7 @@ The three team members, Max, Lucas, and Nick, met for a few minutes, exchanging 
 
 2/8/2016 - Monday
 We created 3 user stories and assigned them UTU (Unspecified Time Units) to give them relative difficulties. We also briefly discussed libraries for doing networking. We briefly discussed project design, including objects and data structures needed for the Battleship game. We tentatively plan on coding the Battleship game in C++.
+
+
+2/17/2016 - Wednesday
+For 35 minutes in class we used TDD to begin writing code for out Battleship game. Before we began coding we discussed the software architecture for the core came module, such as what classes and functions would be required. We wrote our code in C++ and used the Catch unit testing framework. 
