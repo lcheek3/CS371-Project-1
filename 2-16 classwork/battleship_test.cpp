@@ -91,6 +91,5 @@ TEST_CASE("Test Case: Check a fired shot"){
     REQUIRE(testBoard.checkShot(t_x[0], t_y[0]+3)==false);
     REQUIRE(testBoard.checkShot(t_x[0]+1, t_y[0])==false);
     
-
-
 }
+
