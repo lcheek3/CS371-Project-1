@@ -1,0 +1,10 @@
+Task List:
+
+Revised 2/19/2016
+
+Game Setup
+	-Position Validation
+
+Game Loop
+
+Store & Display Shots Taken By Each Player
