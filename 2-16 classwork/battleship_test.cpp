@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-Board testBoard(10,10);
+Board testBoard();
 
 TEST_CASE("test case of TEST_CASE") {
 	REQUIRE(runGame() == 0);
@@ -143,7 +143,7 @@ TEST_CASE("Test Case: Game loss")
     REQUIRE(testBoard.lost()==true);
     
 }
-*/
+
 
 TEST_CASE("Test Case: Name change")
 {
@@ -160,4 +160,4 @@ TEST_CASE("Test Case: Setup")
     testBoard.clearShips();
     testBoard.clearShots();
 }
-
+*/

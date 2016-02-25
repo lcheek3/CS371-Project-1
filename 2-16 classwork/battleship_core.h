@@ -1,3 +1,9 @@
+//
+//battleship_core
+//
+//core of the battleship game
+//
+
 #ifndef BATTLESHIP_CORE_H_INCLUDED
 #define BATTLESHIP_CORE_H_INCLUDED
 
@@ -447,6 +453,9 @@ public:
                     return false;
                 }
             }
+        }else{
+            std::cout <<"Placement Error: invalid direction" <<std::endl;
+            return false;
         }
         
         Ship temp(x,y,d,l);
@@ -543,7 +552,6 @@ public:
         return pBoard;
     }
     
-<<<<<<< HEAD
     //filterShips
     //removes dead ships
     void filterShips()
@@ -555,40 +563,18 @@ public:
                 boats.erase(boats.begin()+i);
             }
         }
-=======
-	void filterBoard()
-	{
-		for (int i = 0; i<boats.size(); ++i)
-		{
-			if (!boats[i].alive())
-			{
-				boats.erase(boats.begin() + i);
-			}
-		}
-	}
-
-    void turn(Board en)
-    {
-		std::cout << "player: make a shot" << std::endl;
-		int x;
-		int y;
-		std::cout << " x: ";
-		std::cin >> x;
-		std::cout << " y: ";
-		std::cin >> y;
-		en.makeShot(x, y);
-		en.filterBoard();
->>>>>>> origin/dev-Nick
     }
+        
+
     
     //turn
     //runs through a turn for this board
-    void turn(Board enemy)
+    void turn(Board & enemy)
     {
         int x, y;
         int shotVal=-1;
         
-        std::cout << playerName <<"Make a shot" <<std::endl;
+        std::cout << playerName <<": Make a shot" <<std::endl;
         enemy.printBoard(1);
         while(shotVal<0)
         {
