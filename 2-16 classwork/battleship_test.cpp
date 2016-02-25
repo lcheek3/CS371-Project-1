@@ -1,4 +1,4 @@
-#define CATCH_CONFIG_MAIN
+/*#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "battleship_core.h"
 #include <iostream>
@@ -143,6 +143,7 @@ TEST_CASE("Test Case: Game loss")
     REQUIRE(testBoard.lost()==true);
     
 }
+*/
 
 TEST_CASE("Test Case: Name change")
 {
