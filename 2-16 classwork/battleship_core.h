@@ -5,10 +5,6 @@
 #include <vector>
 #include <string>
 
-int runGame() {
-	std::cout << "Welcome to Battleship!\n";
-	return 0;
-}
 //Class Ship
 // is a ship
 // pos_x and pos_y keep track of position origin being the top/left most point
@@ -108,6 +104,7 @@ typedef std::pair<std::pair<int,int>,bool> Shot; //used for player shots
 // Vector shots holds all shots made on the board
 class Board {
 private:
+    std::string playerName;
 	int board_x; // the x bound for the board
 	int board_y; // the y  ound for the board
     std::vector<Ship> boats; //holds all the ships
@@ -119,11 +116,12 @@ public:
     //
     
     //default ctor
-    //creates a board that is size 0,0
+    //creates a board that is size 10,10
 	Board() {
 		board_x = 10;
 		board_y = 10;
         eBoard = eBoardCreator(board_x, board_y);
+        playerName = "BLANK";
 	}
     
     //2 param ctor
@@ -132,7 +130,19 @@ public:
 		board_x = x;
 		board_y = y;
         eBoard = eBoardCreator(board_x, board_y);
+        playerName = "BLANK";
 	}
+    
+    //3 param ctor
+    //create a board that is size x,y
+    //playerName is set to the string
+    Board(int x, int y, std::string name)
+    {
+        board_x = x;
+        board_y = y;
+        eBoard = eBoardCreator(board_x, board_y);
+        playerName = name;
+    }
     
     //
     //  Acsessors
@@ -199,6 +209,9 @@ public:
         return eBoard;
     }
     
+    //getShotsBoard
+    //returns a vector of strings
+    //each string is a line of the board
     std::vector<std::string> getShotsBoard()
     {
         int pos;
@@ -221,6 +234,9 @@ public:
         return shotBoard;
     }
     
+    //getShipsBoard
+    //returns a vector of strings
+    //each string is a line of the board
     std::vector<std::string> getShipsBoard()
     {
         std::vector<std::string> sBoard = eBoard;
@@ -245,7 +261,7 @@ public:
                 {
                     for(int j=0;j<l;++j)
                     {
-                        sBoard[boats[i][j].second]='S';
+                        sBoard[boats[i][j].second][boats[i][j].first]='S';
                     }
                     break;
                 }
@@ -253,7 +269,7 @@ public:
                 {
                     for(int j=0;j<l;++j)
                     {
-                        sBoard[boats[i][j].second]='C';
+                        sBoard[boats[i][j].second][boats[i][j].first]='C';
                     }
                     break;
                 }
@@ -261,7 +277,7 @@ public:
                 {
                     for(int j=0;j<l;++j)
                     {
-                        sBoard[boats[i][j].second]='D';
+                        sBoard[boats[i][j].second][boats[i][j].first]='D';
                     }
                     break;
                 }
@@ -278,10 +294,14 @@ public:
         return sBoard;
     }
     
+    //numberBoard
+    //takes a vector of strings
+    //returns the vector with a border in the x and y direction
+    //the border is cordenants
     std::vector<std::string> numberBoard(std::vector<std::string> b)
     {
         b.insert(b.begin(),"X0123456789");
-        char place = 'A';
+        char place = '0';
         for(int i=1; i<=board_y;++i)
         {
             b[i].insert(b[i].begin(), place);
@@ -294,6 +314,28 @@ public:
     //  Functions used durring gameplay
     //
     
+    //nameSetup
+    //changes playername if they want to
+    void nameSetup()
+    {
+        std::string inpt;
+        std::cout << playerName <<": Do you want to change your name?(YES/NO)" <<std::endl;
+        std::cin >> inpt;
+        if(inpt == "YES")
+        {
+            std::cout << "Please enter your name: ";
+            std::cin >> inpt;
+            playerName = inpt;
+        }
+    }
+    
+    //getName
+    //Returns playerName
+    std::string  getName()
+    {
+        return playerName;
+    }
+    
     //defaultSetup
     //gets the player to place their ships on the board
     bool defaultSetup()
@@ -303,6 +345,9 @@ public:
         int y = -1;
         int d =  0;
         int l[5] =  {5,4,3,3,2};
+        
+        printBoard(2);
+        
         while (i<5)
         {
             std::cout <<" ship to place: ";
@@ -351,6 +396,7 @@ public:
                 ++i;
                 x=-1;
                 y=-1;
+                printBoard(2);
             }else
             {
                 std::cout << " The ship was placed in an invalid position" <<std::endl;
@@ -373,27 +419,31 @@ public:
         }
         if(d==1)
         {
-            if(!inBounds(x+l, y))
+            if(!inBounds(x+l-1, y))
             {
+                std::cout <<"Placement Error: exits bounds" <<std::endl;
                 return false;
             }
             for(int i=0; i<l; ++i)
             {
                 if(checkSpace(x+i, y))
                 {
+                    std::cout <<"Placement Error: overlap" <<std::endl;
                     return false;
                 }
             }
         }else if(d==0)
         {
-            if(!inBounds(x, y+l))
+            if(!inBounds(x, y+l-1))
             {
+                std::cout <<"Placement Error: exits bounds" <<std::endl;
                 return false;
             }
             for(int i=0; i<l; ++i)
             {
                 if(checkSpace(x, y+i))
                 {
+                    std::cout <<"Placement Error: overlap" <<std::endl;
                     return false;
                 }
             }
@@ -493,10 +543,10 @@ public:
         return pBoard;
     }
     
-    void turn()
+    //filterShips
+    //removes dead ships
+    void filterShips()
     {
-        //shot function
-        //std::cout<<boats.size() <<std::endl;
         for(int i=0; i<boats.size(); ++i)
         {
             if(!boats[i].alive())
@@ -504,9 +554,39 @@ public:
                 boats.erase(boats.begin()+i);
             }
         }
-        //std::cout<<boats.size() <<std::endl;
     }
     
+    //turn
+    //runs through a turn for this board
+    void turn(Board enemy)
+    {
+        int x, y;
+        int shotVal=-1;
+        
+        std::cout << playerName <<"Make a shot" <<std::endl;
+        enemy.printBoard(1);
+        while(shotVal<0)
+        {
+            std::cout<<"enter x: ";
+            std::cin >> x;
+            std::cout <<"enter y: ";
+            std::cin >> y;
+            shotVal = enemy.makeShot(x, y);
+        }
+        if(shotVal==1)
+        {
+            std::cout<<"Hit" <<std::endl;
+        }else if(shotVal==0)
+        {
+            std::cout<<"Miss" <<std::endl;
+        }
+        
+        enemy.filterShips();
+
+    }
+    
+    //lost
+    //returns true if this board lost the game
     bool lost()
     {
         if(boats.size()<1)
@@ -549,6 +629,16 @@ public:
     }
     
 };
+
+
+
+int runGame() {
+    std::cout << "Welcome to Battleship!\n";
+
+    
+    return 0;
+}
+
 
 
 

@@ -82,10 +82,7 @@ TEST_CASE("Test Case: Checks shooting"){
     testBoard.clearShips();
 }
 
-//TEST_CASE("Test Case: Setup")
-//{
-//    testBoard.defaultSetup();
-//}
+
 
 TEST_CASE("Test Case: Printing"){
     
@@ -119,6 +116,9 @@ TEST_CASE("Test Case: Printing"){
     //
     // A few visual tests
     //
+    
+    std::cout <<"visual tests" <<std::endl;
+    
     testBoard.printBoard(2);
     testBoard.printBoard(1);
     
@@ -138,10 +138,25 @@ TEST_CASE("Test Case: Game loss")
     REQUIRE(testBoard.makeShot(0, 0)==1);
     REQUIRE(testBoard.makeShot(1, 0)==1);
     
-    testBoard.turn();
+    testBoard.filterShips();
     
     REQUIRE(testBoard.lost()==true);
     
 }
 
+TEST_CASE("Test Case: Name change")
+{
+    Board nameBoard(10,10,"test");
+    std::cout <<nameBoard.getName() <<std::endl;
+    nameBoard.nameSetup();
+    REQUIRE(nameBoard.getName()=="Player1");
+    
+}
+
+TEST_CASE("Test Case: Setup")
+{
+    testBoard.defaultSetup();
+    testBoard.clearShips();
+    testBoard.clearShots();
+}
 
