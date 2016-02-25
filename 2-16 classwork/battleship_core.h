@@ -493,18 +493,28 @@ public:
         return pBoard;
     }
     
-    void turn()
+	void filterBoard()
+	{
+		for (int i = 0; i<boats.size(); ++i)
+		{
+			if (!boats[i].alive())
+			{
+				boats.erase(boats.begin() + i);
+			}
+		}
+	}
+
+    void turn(Board en)
     {
-        //shot function
-        //std::cout<<boats.size() <<std::endl;
-        for(int i=0; i<boats.size(); ++i)
-        {
-            if(!boats[i].alive())
-            {
-                boats.erase(boats.begin()+i);
-            }
-        }
-        //std::cout<<boats.size() <<std::endl;
+		std::cout << "player: make a shot" << std::endl;
+		int x;
+		int y;
+		std::cout << " x: ";
+		std::cin >> x;
+		std::cout << " y: ";
+		std::cin >> y;
+		en.makeShot(x, y);
+		en.filterBoard();
     }
     
     bool lost()
