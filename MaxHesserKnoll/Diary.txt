@@ -1,9 +1,22 @@
-2/5/2016 - Friday
+Diary for Max Hesser-Knoll
+
+2/5/2016 - Friday 
 The three team members, Max, Lucas, and Nick, met for a few minutes, exchanging emails and creating a github repository for the Battleship project. We also briefly discussed the scope of the project, such as whether we want a GUI and networked play. 
 
 2/8/2016 - Monday
 We created 3 user stories and assigned them UTU (Unspecified Time Units) to give them relative difficulties. We also briefly discussed libraries for doing networking. We briefly discussed project design, including objects and data structures needed for the Battleship game. We tentatively plan on coding the Battleship game in C++.
 
+2/17/2016 - Wednesday 
+For 35 minutes in class we used TDD to begin writing code for out Battleship game. Before we began coding we discussed the software architecture for the core came module, such as what classes and functions would be required. We wrote our code in C++ and used the Catch unit testing framework. Pair programming works well as it keeps everyone up to date on the code and allows faster troubleshooting and design decisions to be made. TDD has its merits but it is hard to get used to writing tests before hand and getting them to simultaneously compile and fail before writing actual project code. Currently is is certainly much slower than writing code without writing the tests first, but I feel that it will lead to more reliable code overall. 
 
-2/17/2016 - Wednesday
-For 35 minutes in class we used TDD to begin writing code for out Battleship game. Before we began coding we discussed the software architecture for the core came module, such as what classes and functions would be required. We wrote our code in C++ and used the Catch unit testing framework. 
+2/19/2016 - Friday 
+We presented to results of our pair programming session on Wednesday to to the class. The team met for approximately 30 minutes after class to discuss plans for the project. A project task list was created and added to the Git Repo for the project. The rough code from Wednesday was reviewed.
+
+2/22/2016 - Monday 
+The team met for 15 minutes after class to discuss project progress over the weekend. Core game module code was written in C++ using TDD with the Catch testing framework. Rough draft software requirements documents and design documents have been written. Cinder was decided on for the graphics library to use. 
+
+2/24/2016 - Wednesday 
+The team did an in class pair programming session for 30 minutes. Unit tests were reviewed and a game loop was implemented. Battleship gameplay is now possible. The upcoming Friday presentation was discussed after class for 20 minutes. Up to date versions documentation will be uploaded to the Github repo before Friday. The code will be compiling and passing all unit tests. A demo game should be possible. 
+
+
+
