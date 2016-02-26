@@ -1,9 +1,10 @@
-#define CATCH_CONFIG_MAIN
+/*#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "battleship_core.h"
 #include <iostream>
 #include <vector>
 
+Board testBoard();
 
 TEST_CASE("test case of TEST_CASE") {
 	REQUIRE(runGame() == 0);
@@ -11,85 +12,152 @@ TEST_CASE("test case of TEST_CASE") {
 
 TEST_CASE("Test Case: Board Bound") {
 
-	Board testBoard(10,10);
-
 	REQUIRE(testBoard.getX() == 10);
 
 	REQUIRE(testBoard.getY() == 10);
 }
 
-TEST_CASE("Test Case: Ship creation and placement") {
+TEST_CASE("Checks if inBounds works")
+{
+    REQUIRE(testBoard.inBounds(-1, 0)==false);
+    REQUIRE(testBoard.inBounds(10, 0)==false);
+    REQUIRE(testBoard.inBounds(0, -1)==false);
+    REQUIRE(testBoard.inBounds(0, 10)==false);
     
-    std::vector<int> t_x;
-    std::vector<int> t_y;
-    std::vector<int> t_d;
-    std::vector<int> t_l;
+    REQUIRE(testBoard.inBounds(5, 5)==true);
+}
+
+TEST_CASE("Test Case: Ship creation and placement and clear")
+{
+    REQUIRE(testBoard.placeShip(2,0,0,3)==true);
+    REQUIRE(testBoard.placeShip(4,4,1,4)==true);
+    REQUIRE(testBoard.placeShip(2,4,0,5)==true);
     
-    t_x.push_back(0);
-    t_y.push_back(0);
-    t_d.push_back(0);
-    t_l.push_back(3);
     
-    t_x.push_back(4);
-    t_y.push_back(4);
-    t_d.push_back(1);
-    t_l.push_back(4);
+    REQUIRE(testBoard.placeShip(0, 0, 1, 3)==false);
     
-    t_x.push_back(2);
-    t_y.push_back(4);
-    t_d.push_back(0);
-    t_l.push_back(5);
+    REQUIRE(testBoard.placeShip(-1, 3, 0, 3)==false);
+    REQUIRE(testBoard.placeShip(10, 3, 0, 3)==false);
     
-    Board testBoard;
-    std::vector<Ship> testShips;
+    REQUIRE(testBoard.howManyShips()==3);
     
-    for(int i=0; i<t_x.size(); ++i)
-        testBoard.placeShip(t_x[i], t_y[i], t_d[i], t_l[i]);
+    testBoard.clearShips();
     
-    testShips = testBoard.getShips();
+    REQUIRE(testBoard.howManyShips()==0);
+}
+
+TEST_CASE("Test Case: Checks shooting"){
+    int t_x =2;
+    int t_y= 2;
+    int t_d =0;
+    int t_l= 3;
     
-    REQUIRE(testShips[0][0]==std::make_pair(0, 0));
-    REQUIRE(testShips[0][1]==std::make_pair(0, 1));
-    REQUIRE(testShips[0][2]==std::make_pair(0, 2));
-    REQUIRE(testShips[0][3]==std::make_pair(-1, -1));
+    REQUIRE(testBoard.placeShip(t_x, t_y, t_d, t_l)==true);
     
-    REQUIRE(testShips[1][0]==std::make_pair(4, 4));
-    REQUIRE(testShips[1][1]==std::make_pair(5, 4));
-    REQUIRE(testShips[1][2]==std::make_pair(6, 4));
-    REQUIRE(testShips[1][3]==std::make_pair(7, 4));
-    REQUIRE(testShips[1][4]==std::make_pair(-1,-1));
+    //check shots accros a ship and around it
+    //shot total 6
+    REQUIRE(testBoard.makeShot(t_x,  t_y-1)==0);
+    REQUIRE(testBoard.makeShot(t_x,  t_y  )==1);
+    REQUIRE(testBoard.makeShot(t_x,  t_y+1)==1);
+    REQUIRE(testBoard.makeShot(t_x,  t_y+2)==1);
+    REQUIRE(testBoard.makeShot(t_x,  t_y+3)==0);
+    REQUIRE(testBoard.makeShot(t_x+1, t_y )==0);
     
-    REQUIRE(testShips[2][0]==std::make_pair(2, 4));
-    REQUIRE(testShips[2][1]==std::make_pair(2, 5));
-    REQUIRE(testShips[2][2]==std::make_pair(2, 6));
-    REQUIRE(testShips[2][3]==std::make_pair(2, 7));
-    REQUIRE(testShips[2][4]==std::make_pair(2, 8));
-    REQUIRE(testShips[2][5]==std::make_pair(-1,-1));
+    //out of bounds tests
+    REQUIRE(testBoard.makeShot(0, -1)==-2);
+    REQUIRE(testBoard.makeShot(0, 10)==-2);
+    REQUIRE(testBoard.makeShot(-1, 0)==-2);
+    REQUIRE(testBoard.makeShot(10, 0)==-2);
+    
+    //check repeat shot
+    REQUIRE(testBoard.makeShot(t_x,  t_y+2)==-1);
+    
+    //checks number of shots made
+    REQUIRE(testBoard.howManyShots()==6);
+    
+    testBoard.clearShots();
+    
+    REQUIRE(testBoard.howManyShots()==0);
+    
+    testBoard.clearShips();
+}
+
+
+
+TEST_CASE("Test Case: Printing"){
+    
+    testBoard.placeShip(2, 2, 0, 5);
+    
+    std::vector<std::string> good;
+    for(int i=0; i<10; ++i)
+        good.push_back("~~~~~~~~~~");
+    
+    std::vector<std::string> good2;
+    good2.push_back("M~~~~~~~~~");//
+    good2.push_back("~~~~~~~~~~");//
+    good2.push_back("~~~~~~~~~~");
+    good2.push_back("~~~~~~~~~~");
+    good2.push_back("~~~~~~~~~~");
+    good2.push_back("~~~~~M~~~~");
+    good2.push_back("~~~~~~~~~~");
+    good2.push_back("~~~~~~~~~~");
+    good2.push_back("~~~~~~~~~~");
+    good2.push_back("M~~~~~~~~M");
+    
+    REQUIRE(testBoard.eBoardCreator(10, 10)==good);
+    
+    testBoard.makeShot(5, 5);
+    testBoard.makeShot(0, 0);
+    testBoard.makeShot(9, 9);
+    testBoard.makeShot(0, 9);
+    
+    REQUIRE(testBoard.getShotsBoard()==good2);
+    
+    //
+    // A few visual tests
+    //
+    
+    std::cout <<"visual tests" <<std::endl;
+    
+    testBoard.printBoard(2);
+    testBoard.printBoard(1);
+    
+    testBoard.makeShot(2, 2);
+    
+    testBoard.printBoard(1);
+    
+    testBoard.clearShips();
+    testBoard.clearShots();
     
 }
 
-TEST_CASE("Test Case: Check a fired shot"){
-    std::vector<int> t_x;
-    std::vector<int> t_y;
-    std::vector<int> t_d;
-    std::vector<int> t_l;
+TEST_CASE("Test Case: Game loss")
+{
+    testBoard.placeShip(0, 0, 1, 2);
     
-    t_x.push_back(0);
-    t_y.push_back(0);
-    t_d.push_back(0);
-    t_l.push_back(3);
+    REQUIRE(testBoard.makeShot(0, 0)==1);
+    REQUIRE(testBoard.makeShot(1, 0)==1);
     
-    Board testBoard;
+    testBoard.filterShips();
     
-    for(int i=0; i<t_x.size(); ++i)
-        testBoard.placeShip(t_x[i], t_y[i], t_d[i], t_l[i]);
-    
-    REQUIRE(testBoard.checkShot(t_x[0], t_y[0]-1)==false);
-    REQUIRE(testBoard.checkShot(t_x[0], t_y[0])==true);
-    REQUIRE(testBoard.checkShot(t_x[0], t_y[0]+1)==true);
-    REQUIRE(testBoard.checkShot(t_x[0], t_y[0]+2)==true);
-    REQUIRE(testBoard.checkShot(t_x[0], t_y[0]+3)==false);
-    REQUIRE(testBoard.checkShot(t_x[0]+1, t_y[0])==false);
+    REQUIRE(testBoard.lost()==true);
     
 }
 
+
+TEST_CASE("Test Case: Name change")
+{
+    Board nameBoard(10,10,"test");
+    std::cout <<nameBoard.getName() <<std::endl;
+    nameBoard.nameSetup();
+    REQUIRE(nameBoard.getName()=="Player1");
+    
+}
+
+TEST_CASE("Test Case: Setup")
+{
+    testBoard.defaultSetup();
+    testBoard.clearShips();
+    testBoard.clearShots();
+}
+*/
