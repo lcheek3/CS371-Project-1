@@ -9,7 +9,8 @@ int main() {
 	Board player2(10, 10,"Player2");
     player1.nameSetup();
 	player1.defaultSetup();
-    std::cout <<"Please pass the game" <<std::endl;
+    std::cout <<"Please pass the game and the press ENTER." <<std::endl;
+    std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
     player2.nameSetup();
 	player2.defaultSetup();
 	while (true)

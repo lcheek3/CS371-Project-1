@@ -325,8 +325,12 @@ public:
     void nameSetup()
     {
         std::string inpt;
-        std::cout << playerName <<": Do you want to change your name?(YES/NO)" <<std::endl;
-        std::cin >> inpt;
+        do
+        {
+            std::cout << playerName <<": Do you want to change your name?(YES/NO)" <<std::endl;
+            std::cin >> inpt;
+        }
+        while(!std::cin.fail() && inpt!="YES" && inpt!="NO");
         if(inpt == "YES")
         {
             std::cout << "Please enter your name: ";
@@ -352,11 +356,13 @@ public:
         int d =  0;
         int l[5] =  {5,4,3,3,2};
         
+        std::cout << std::endl;
         printBoard(2);
+        std::cout << std::endl;
         
         while (i<5)
         {
-            std::cout <<" ship to place: ";
+            std::cout <<"Ship to place: ";
             switch(i)
             {
                 case 0:
@@ -391,18 +397,75 @@ public:
                 }
                 
             }
-            std::cout <<" x Pos for the ship :";
-            std::cin >> x;
-            std::cout <<" y Pos for the ship :";
-            std::cin >> y;
-            std::cout <<" 0 for vertical 1 for horizontal :";
-            std::cin >> d;
+            
+            std::cout << "Please enter the ship's position:" << std::endl;
+            for (;;)
+            {
+                //get users x and y coordinates for the car
+                std::cout << "X position: ";
+                if (std::cin >> x && 0 <= x && x <= board_x) // True if entered value is between 1 and 10
+                {
+                    // 'clear()' function used to remove decimal portion of double type inputs from the keyboard buffer
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    // Break out of infinte for loop
+                    break;
+                }
+                else
+                {
+                    std::cout << "INVALID INPUT: Must enter 0 through 10" << std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
+            }
+            
+            for (;;)
+            {
+                //get users x and y coordinates for the car
+                std::cout << "Y position: ";
+                if (std::cin >> y && 0 <= y && y <= board_y) // True if entered value is between 1 and 10
+                {
+                    // 'clear()' function used to remove decimal portion of double type inputs from the keyboard buffer
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    // Break out of infinte for loop
+                    break;
+                }
+                else
+                {
+                    std::cout << "INVALID INPUT: Must enter 0 through 10" << std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
+            }
+
+            for (;;)
+            {
+                std::cout << "0 for vertical 1 for horizontal :" << std::endl;
+                if (std::cin >> d && 0 <= d && d <= 1) // True if entered value is between 1 and 0
+                {
+                    // 'clear()' function used to remove decimal portion of double type inputs from the keyboard buffer
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    // Break out of infinte for loop
+                    break;
+                }
+                else
+                {
+                    std::cout << "INVALID INPUT: Must enter 1 or 0 " << std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
+            }
+            
             if(placeShip(x,y,d,l[i]))
             {
                 ++i;
                 x=-1;
                 y=-1;
+                std::cout << std::endl;
                 printBoard(2);
+                std::cout << std::endl;
             }else
             {
                 std::cout << " The ship was placed in an invalid position" <<std::endl;
